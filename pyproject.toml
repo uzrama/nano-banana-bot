@@ -23,6 +23,8 @@ dependencies = [
     "sqlalchemy>=2.0.47",
     "uvicorn>=0.41.0",
 ]
+[tool.ruff]
+line-length = 180
 
 [project.scripts]
 nano-banana-bot = "nano_banana_bot:main"
@@ -30,3 +32,4 @@ nano-banana-bot = "nano_banana_bot:main"
 [build-system]
 requires = ["uv_build>=0.10.7,<0.11.0"]
 build-backend = "uv_build"
+
