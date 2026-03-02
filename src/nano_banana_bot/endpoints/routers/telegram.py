@@ -71,9 +71,7 @@ class TelegramRequestHandler:
             await self.dispatcher.silent_call_request(bot=self.bot, result=result)
 
     async def _handle_request_background(self, update: Update) -> None:
-        feed_update_task: asyncio.Task[Any] = asyncio.create_task(
-            self._feed_update(update=update)
-        )
+        feed_update_task: asyncio.Task[Any] = asyncio.create_task(self._feed_update(update=update))
         self._feed_update_tasks.add(feed_update_task)
         feed_update_task.add_done_callback(self._feed_update_tasks.discard)
 
