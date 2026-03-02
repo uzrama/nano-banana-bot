@@ -1,5 +1,6 @@
 import pytest
 import pytest_asyncio
+from unittest.mock import AsyncMock, MagicMock
 from sqlalchemy import func, DateTime, Integer, BigInteger
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from nano_banana_bot.models.base import Base
@@ -54,3 +55,18 @@ async def sql_context(session_pool):
 async def session(session_pool):
     async with session_pool() as session:
         yield session
+
+
+@pytest.fixture
+def mock_redis():
+    mock = AsyncMock()
+    mock.get = AsyncMock(return_value=None)
+    mock.set = AsyncMock()
+    mock.setex = AsyncMock()
+    mock.delete = AsyncMock()
+    return mock
+
+
+@pytest.fixture
+def mock_app_config():
+    return MagicMock()
