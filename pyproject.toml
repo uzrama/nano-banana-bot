@@ -9,12 +9,14 @@ authors = [
 requires-python = ">=3.14"
 dependencies = [
     "aiogram>=3.25.0",
+    "aiogram-contrib>=1.1.4",
     "aiogram-dialog>=2.5.0",
     "aiogram-i18n>=1.4",
     "aiohttp>=3.13.3",
     "alembic>=1.18.4",
     "asyncpg>=0.31.0",
     "fastapi>=0.134.0",
+    "fluent-runtime>=0.4.0",
     "greenlet>=3.3.2",
     "msgspec>=0.20.0",
     "pydantic>=2.12.5",

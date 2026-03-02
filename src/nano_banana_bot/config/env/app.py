@@ -11,7 +11,7 @@ from .telegram import TelegramConfig
 class AppConfig(BaseModel):
     telegram: TelegramConfig
     postgres: PostgresConfig
-    sql_alchemy: SQLAlchemyConfig
+    alchemy: SQLAlchemyConfig
     redis: RedisConfig
     server: ServerConfig
     common: CommonConfig
