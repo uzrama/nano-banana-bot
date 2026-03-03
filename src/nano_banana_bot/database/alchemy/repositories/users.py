@@ -8,7 +8,7 @@ from nano_banana_bot.models.user import User
 from .base import BaseAlchemyRepository
 
 
-class UsersRepository(BaseAlchemyRepository):
+class UsersRepository(BaseAlchemyRepository[User]):
     async def get(self, user_id: int) -> User | None:
         return await self._get(User, User.id == user_id)
 

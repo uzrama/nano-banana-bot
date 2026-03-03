@@ -18,7 +18,7 @@ def redis_cache(
     ttl: ExpiryT | None = None,
 ) -> Callable[[Callable[P, Awaitable[T]]], Callable[P, Awaitable[T]]]:
     def decorator(func: Callable[P, Awaitable[T]]) -> Callable[P, Awaitable[T]]:
-        return_type: Any = get_type_hints(func)["return"]
+        return_type: Any = get_type_hints(func).get("return", Any)
         type_adapter: TypeAdapter[T] = TypeAdapter(return_type)
 
         @wraps(func)

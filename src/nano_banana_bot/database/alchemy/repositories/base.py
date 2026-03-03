@@ -1,47 +1,41 @@
-from __future__ import annotations
-
-from typing import Any, TypeVar, cast, override
+from typing import Any, cast, override
 
 from sqlalchemy import ColumnExpressionArgument, delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import InstrumentedAttribute
 
 from nano_banana_bot.database.base import BaseRepository
 
-T = TypeVar("T", bound=Any)
-ColumnClauseType = type[T] | InstrumentedAttribute[T]
 
-
-class BaseAlchemyRepository(BaseRepository):
+class BaseAlchemyRepository[M](BaseRepository[M, ColumnExpressionArgument[bool]]):
     session: AsyncSession
 
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
     @override
-    async def _get(self, model: ColumnClauseType[T], *conditions: ColumnExpressionArgument[Any]) -> T | None:
+    async def _get(self, model: type[M], *conditions: ColumnExpressionArgument[bool]) -> M | None:
         return await self.session.scalar(select(model).where(*conditions))
 
     @override
     async def _get_many(
         self,
-        model: ColumnClauseType[T],
-        *conditions: ColumnExpressionArgument[Any],
-    ) -> list[T]:
+        model: type[M],
+        *conditions: ColumnExpressionArgument[bool],
+    ) -> list[M]:
         return list(await self.session.scalars(select(model).where(*conditions)))
 
     @override
     async def _update(
         self,
-        model: ColumnClauseType[T],
-        *conditions: ColumnExpressionArgument[Any],
+        model: type[M],
+        *conditions: ColumnExpressionArgument[bool],
         load_result: bool = True,
         **kwargs: Any,
-    ) -> T | None:
+    ) -> M | None:
         if not kwargs:
             if not load_result:
                 return None
-            return cast(T, await self._get(model, *conditions))
+            return cast(M, await self._get(model, *conditions))
         query = update(model).where(*conditions).values(**kwargs)
         if load_result:
             query = query.returning(model)
@@ -51,8 +45,8 @@ class BaseAlchemyRepository(BaseRepository):
     @override
     async def _delete(
         self,
-        model: ColumnClauseType[T],
-        *conditions: ColumnExpressionArgument[Any],
+        model: type[M],
+        *conditions: ColumnExpressionArgument[bool],
     ) -> bool:
         result = await self.session.execute(delete(model).where(*conditions))
-        return cast(bool, result.rowcount > 0)
+        return cast(bool, result.rowcount > 0)  # pyright: ignore[reportAttributeAccessIssue]

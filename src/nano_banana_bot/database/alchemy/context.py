@@ -9,7 +9,7 @@ from nano_banana_bot.database.base import BaseSessionContext
 from .uow import UoW
 
 
-class AlchemySessionContext(BaseSessionContext):
+class AlchemySessionContext(BaseSessionContext[Repository, UoW]):
     _session_pool: async_sessionmaker[AsyncSession]
     _session: AsyncSession | None
 
