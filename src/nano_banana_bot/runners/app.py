@@ -12,7 +12,7 @@ from nano_banana_bot.endpoints.routers.telegram import TelegramRequestHandler
 from nano_banana_bot.factory.telegram import setup_fastapi
 from nano_banana_bot.runners.lifespan import emit_aiogram_shutdown
 from nano_banana_bot.runners.polling import polling_lifespan, polling_startup
-from nano_banana_bot.runners.webhook import webhook_shutdown, webhook_startup
+from nano_banana_bot.runners.webhook import webhook_lifespan, webhook_shutdown, webhook_startup
 
 if TYPE_CHECKING:
     from nano_banana_bot.config import AppConfig
@@ -47,7 +47,7 @@ def run_polling(dispatcher: Dispatcher, bot: Bot, config: AppConfig) -> None:
 
 def run_webhook(dispatcher: Dispatcher, bot: Bot, config: AppConfig) -> None:
     dispatcher.workflow_data.update(is_polling=False)
-    app: FastAPI = FastAPI()
+    app: FastAPI = FastAPI(lifespan=webhook_lifespan)
     setup_fastapi(app=app, bot=bot, dispatcher=dispatcher)
     handler: TelegramRequestHandler = TelegramRequestHandler(
         dispatcher=dispatcher,

@@ -29,8 +29,6 @@ class TelegramRequestHandler:
         self.bot = bot
         self.secret_token = secret_token
         self.router: APIRouter = APIRouter(
-            on_startup=(self.startup,),
-            on_shutdown=(self.shutdown,),
             include_in_schema=False,
         )
         self.router.add_api_route(path=path, endpoint=self.handle, methods=["POST"])
