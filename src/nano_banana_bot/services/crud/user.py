@@ -47,9 +47,10 @@ class UserService(CrudService):
         async with AlchemySessionContext(session_pool=self.session_pool) as (repository, uow):
             for key, value in data.items():
                 setattr(user, key, value)
-            await self.clear_cache(user_id=user.id)
             user_db = await repository.users.update(user_id=user.id, **user.model_state)
             if user_db is None:
                 return None
             await uow.commit()
+
+            await self.clear_cache(user_id=user.id)
             return user_db.scheme()
