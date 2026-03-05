@@ -28,6 +28,9 @@ dependencies = [
 [tool.ruff]
 line-length = 180
 
+[tool.basedpyright]
+reportUnusedCallResult = false
+
 [project.scripts]
 nano-banana-bot = "nano_banana_bot:main"
 
