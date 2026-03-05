@@ -36,9 +36,7 @@ class AlchemySessionContext(BaseSessionContext[Repository, UoW]):
 
         try:
             if exc_type:
-                # Если возникло исключение, откатываем изменения
                 await self._session.rollback()
         finally:
-            # В любом случае закрываем сессию
             await self._session.close()
             self._session = None
