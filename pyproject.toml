@@ -6,9 +6,9 @@ readme = "README.md"
 authors = [
     { name = "uzrama", email = "mark.uzun7@gmail.com" }
 ]
-requires-python = ">=3.14"
+requires-python = ">=3.11"
 dependencies = [
-    "aiogram>=3.25.0",
+    "aiogram>=3.15.0",
     "aiogram-contrib>=1.1.4",
     "aiogram-dialog>=2.5.0",
     "aiogram-i18n>=1.4",
@@ -19,8 +19,9 @@ dependencies = [
     "fluent-runtime>=0.4.0",
     "greenlet>=3.3.2",
     "msgspec>=0.20.0",
-    "pydantic>=2.12.5",
-    "pydantic-settings>=2.13.1",
+    "prometheus-client>=0.24.1",
+    "pydantic>=2.4.1",
+    "pydantic-settings>=2.7.0",
     "redis>=7.2.1",
     "sqlalchemy>=2.0.47",
     "uvicorn>=0.41.0",

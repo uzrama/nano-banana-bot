@@ -15,6 +15,7 @@ from nano_banana_bot.factory.telegram.i18n import create_i18n_middleware
 from nano_banana_bot.telegram.dialogs import user_dialogs
 from nano_banana_bot.telegram.handlers import user_handlers
 from nano_banana_bot.telegram.middlewares import UserMiddleware
+from nano_banana_bot.telegram.middlewares.prometheus import PrometheusMiddleware
 from nano_banana_bot.utils import mjson
 
 
@@ -49,7 +50,9 @@ def create_dispatcher(config: AppConfig) -> Dispatcher:
     dispatcher.update.outer_middleware(UserMiddleware())
     dispatcher.callback_query.middleware(CallbackAnswerMiddleware())
 
-    i18n_middleware.setup(dispatcher=dispatcher)
+    dispatcher.update.outer_middleware(PrometheusMiddleware())
 
+    i18n_middleware.setup(dispatcher=dispatcher)
     setup_dialogs(dispatcher)
+
     return dispatcher
