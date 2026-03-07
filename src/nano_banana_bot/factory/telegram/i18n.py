@@ -1,5 +1,3 @@
-from typing import cast
-
 from aiogram_i18n import I18nMiddleware
 from aiogram_i18n.cores import FluentRuntimeCore
 
@@ -9,7 +7,7 @@ from nano_banana_bot.utils.localization import UserManager
 
 
 def create_i18n_core(config: AppConfig) -> FluentRuntimeCore:
-    locales: list[str] = cast(list[str], config.telegram.locales)
+    locales: list[str] = config.telegram.locales
     return FluentRuntimeCore(
         path=MESSAGES_SOURCE_DIR / "{locale}",
         raise_key_error=False,

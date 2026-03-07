@@ -5,7 +5,7 @@ from sqlalchemy import URL
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 from nano_banana_bot.config.env import PostgresConfig
-from nano_banana_bot.models.base import Base
+from nano_banana_bot.models import Base
 from alembic import context
 
 # this is the Alembic Config object, which provides

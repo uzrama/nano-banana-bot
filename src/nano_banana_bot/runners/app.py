@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from uvicorn import server
 
 from nano_banana_bot.endpoints.routers.telegram import TelegramRequestHandler
-from nano_banana_bot.factory.telegram import setup_fastapi
+from nano_banana_bot.factory import setup_fastapi
 from nano_banana_bot.runners.lifespan import emit_aiogram_shutdown
 from nano_banana_bot.runners.polling import polling_lifespan, polling_startup
 from nano_banana_bot.runners.webhook import webhook_lifespan, webhook_shutdown, webhook_startup
