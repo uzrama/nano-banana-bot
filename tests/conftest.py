@@ -9,25 +9,25 @@ from nano_banana_bot.database.alchemy.context import AlchemySessionContext
 
 @pytest.fixture(scope="session", autouse=True)
 def fix_sqlite_compatibility():
-    # 1. Исправляем type_annotation_map для SQLite
-    # Для SQLite BigInteger не поддерживает AUTOINCREMENT так, как Integer.
-    # Поэтому заменяем BigInteger и DateTime(timezone=True)
+    # 1. Fix type_annotation_map for SQLite
+    # SQLite's BigInteger does not support AUTOINCREMENT the way Integer does.
+    # Therefore, we replace BigInteger and DateTime(timezone=True)
     for type_hint, sql_type in Base.registry.type_annotation_map.items():
         if isinstance(sql_type, DateTime) and sql_type.timezone:
             Base.registry.type_annotation_map[type_hint] = DateTime(timezone=False)
         if isinstance(sql_type, BigInteger):
             Base.registry.type_annotation_map[type_hint] = Integer()
 
-    # 2. Исправляем server_default в колонках, которые уже созданы
+    # 2. Fix server_default in already created columns
     for table in Base.metadata.tables.values():
         for column in table.columns:
-            # Исправляем timezone
+            # Fix timezone
             if column.server_default is not None and hasattr(column.server_default, "arg"):
                 arg = str(column.server_default.arg)
                 if "timezone" in arg.lower():
                     column.server_default.arg = func.now()
 
-            # Исправляем BigInteger на Integer для первичных ключей в SQLite
+            # Replace BigInteger with Integer for primary keys in SQLite
             if column.primary_key and isinstance(column.type, BigInteger):
                 column.type = Integer()
 

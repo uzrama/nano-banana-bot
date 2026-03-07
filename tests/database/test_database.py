@@ -5,34 +5,34 @@ from nano_banana_bot.models.user import User
 @pytest.mark.asyncio
 async def test_user_lifecycle(sql_context):
     async with sql_context as (db, uow):
-        # 1. Создание пользователя
+        # 1. Create a user
         new_user = User(name="Test User", language="ru", language_code="ru")
         await uow.commit(new_user)
         user_id = new_user.id
 
     async with sql_context as (db, uow):
-        # 2. Получение пользователя
+        # 2. Get a user
         user = await db.users.get(user_id)
         assert user is not None
         assert user.name == "Test User"
         assert user.language == "ru"
 
-        # 3. Обновление пользователя
+        # 3. Update a user
         updated_user = await db.users.update(user_id, name="Updated Name")
         assert updated_user.name == "Updated Name"
 
-        # Проверяем, что в базе еще не обновилось (нет коммита)
-        # Для этого нужно создать новую сессию через db_context
-        # Но так как SQLite in-memory, нам нужно использовать ту же базу.
-        # В данном тесте мы проверим обновление после коммита.
+        # Check that the database has not been updated yet (no commit)
+        # To do this, we need to create a new session via db_context
+        # But since SQLite is in-memory, we need to use the same database.
+        # In this test, we verify the update after a commit.
         await uow.commit()
 
     async with sql_context as (db, uow):
-        # 4. Проверка после коммита
+        # 4. Verify after commit
         user = await db.users.get(user_id)
         assert user.name == "Updated Name"
 
-        # 5. Подсчет пользователей
+        # 5. Count users
         count = await db.users.count()
         assert count == 1
 
